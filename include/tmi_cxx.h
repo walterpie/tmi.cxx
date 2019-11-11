@@ -63,6 +63,8 @@ void tmi_connect(TmiClient *client);
 TmiPromise *tmi_promise_and_then(TmiPromise *promise, and_then_t and_then);
 void tmi_promise_or_else(TmiPromise *promise, or_else_t or_else);
 
+void tmi_del_object(TmiObject *object);
+
 int tmi_object_is_object(TmiObject *object);
 int tmi_object_is_array(TmiObject *object);
 int tmi_object_is_string(TmiObject *object);
