@@ -845,13 +845,16 @@ void TmixxClient::on_message(on_message_t callback) {
         auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
         channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
 
+        auto userstate_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
         auto msg_str = args[2]->ToString(context).ToLocalChecked();
         auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
         msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
 
         auto self = args[3]->ToBoolean(isolate)->Value();
 
-        client->cb_message((TmiClient*) client, channel_buf, nullptr, msg_buf, self);
+        client->cb_message((TmiClient*) client, channel_buf, (TmiObject*) userstate, msg_buf, self);
 
         delete[] channel_buf;
         delete[] msg_buf;
