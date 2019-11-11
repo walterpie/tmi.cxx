@@ -4,8 +4,12 @@
 
 using namespace tmi_cxx;
 
-extern "C" void tmi_connect(TmiClient *client) {
-    ((TmixxClient *) client)->connect();
+extern "C" void tmi_connect(TmiClient *client, void *userdata) {
+    ((TmixxClient *) client)->connect(userdata);
+}
+
+extern "C" void *tmi_userdata(TmiClient *client) {
+    return ((TmixxClient *) client)->userdata();
 }
 
 extern "C" void tmi_del_promise(TmiPromise *promise) {
@@ -650,7 +654,9 @@ void TmixxClient::New(const FunctionCallbackInfo<Value>& args) {
     }
 }
 
-void TmixxClient::connect() {
+void TmixxClient::connect(void* userdata) {
+    this->_userdata = userdata;
+
     auto client = this->client.Get(this->isolate);
     auto connect = String::NewFromUtf8(this->isolate, "connect", NewStringType::kNormal).ToLocalChecked();
     auto connect_fn = client
@@ -662,6 +668,10 @@ void TmixxClient::connect() {
     const unsigned argc = 0;
     Local<Value> argv[argc] = {};
     connect_fn->CallAsFunction(context, client, argc, argv).ToLocalChecked();
+}
+
+void* TmixxClient::userdata() {
+    return this->_userdata;
 }
 
 TmixxPromise* TmixxClient::action() {

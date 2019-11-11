@@ -58,7 +58,8 @@ typedef void (*on_unmod_t)(TmiClient *client);
 typedef void (*on_vips_t)(TmiClient *client);
 typedef void (*on_whisper_t)(TmiClient *client);
 
-void tmi_connect(TmiClient *client);
+void tmi_connect(TmiClient *client, void *userdata);
+void *tmi_userdata(TmiClient *client);
 
 TmiPromise *tmi_promise_and_then(TmiPromise *promise, and_then_t and_then);
 void tmi_promise_or_else(TmiPromise *promise, or_else_t or_else);
@@ -235,6 +236,7 @@ namespace tmi_cxx {
 
     class TmixxClient : public node::ObjectWrap {
     private:
+        void* _userdata;
         Persistent<Object, CopyablePersistentTraits<Object>> client;
 
         static void New(const FunctionCallbackInfo<Value>& args);
@@ -293,7 +295,8 @@ namespace tmi_cxx {
 
         static void Init(Local<Object> exports);
 
-        void connect();
+        void connect(void* userdata);
+        void* userdata();
 
         TmixxPromise* action();
         TmixxPromise* ban();
