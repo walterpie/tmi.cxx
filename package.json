@@ -1,0 +1,10 @@
+{
+  "name": "tmi_cxx",
+  "version": "0.1.0",
+  "private": true,
+  "gypfile": true,
+  "dependencies": {
+    "node-addon-api": "^1.7.1",
+    "tmi.js": "^1.5.0"
+  }
+}
