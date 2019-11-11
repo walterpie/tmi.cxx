@@ -14,9 +14,9 @@ A C/C++ interface to tmi.js.
 ```
 node tmi_cxx/tmi_cxx.js BOT.so CONFIG.json SECRET.json
 ```
-    where `BOT.so` should be replaced by the path to your shared library, `CONFIG.json` should be replaced by a path to
-    the configuration json (see example below) and finally `SECRET.json` should be replaced by a path to your secret
-    json (see example below).
+where `BOT.so` should be replaced by the path to your shared library, `CONFIG.json` should be replaced by a path to
+the configuration json (see example below) and finally `SECRET.json` should be replaced by a path to your secret
+json (see example below).
 
 ## Example
 
