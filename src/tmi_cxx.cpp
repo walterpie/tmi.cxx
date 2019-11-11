@@ -1,4 +1,5 @@
 #include <node.h>
+#include <cmath>
 #include "../include/tmi_cxx.h"
 
 using namespace tmi_cxx;
@@ -562,16 +563,16 @@ double TmixxObject::to_number() {
         auto num = this->object.Get(this->isolate)->ToNumber(this->context).ToLocalChecked();
         return num->Value();
     } else {
-        return nullptr;
+        return NAN;
     }
 }
 
 bool TmixxObject::to_bool() {
     if (this->is_bool()) {
-        auto boolean = this->object.Get(this->isolate)->ToBoolean(this->context).ToLocalChecked();
+        auto boolean = this->object.Get(this->isolate)->ToBoolean(this->isolate);
         return boolean->Value();
     } else {
-        return nullptr;
+        return false;
     }
 }
 
