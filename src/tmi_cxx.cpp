@@ -324,6 +324,10 @@ extern "C" void tmi_del_object(TmiObject *object) {
     delete (TmixxObject *) object;
 }
 
+extern "C" TmiObject *tmi_object_get_properties(TmiObject *object) {
+    return (TmiObject *) ((TmixxObject *) object)->get_properties();
+}
+
 extern "C" int tmi_object_is_object(TmiObject *object) {
     return (int) ((TmixxObject *) object)->is_object();
 }
@@ -528,6 +532,16 @@ void TmixxObject::New(const FunctionCallbackInfo<Value>& args) {
     } else {
         // TODO: throw exception
     }
+}
+
+TmixxObject* TmixxObject::get_properties() {
+    auto object = this->object
+        .Get(this->isolate)
+        ->GetOwnPropertyNames(this->context)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxObject(this->client, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, object));
 }
 
 bool TmixxObject::is_object() {
