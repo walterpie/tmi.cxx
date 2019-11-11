@@ -6,6 +6,7 @@ A C/C++ interface to tmi.js.
 
  - Import this repository either as a git submodule or by simply copying it into your project.
  - Make sure `tmi.js` is in your `node_modules` using `npm install tmi.js`.
+ - Make sure `node-addon-api` is in your `node_modules` using `npm install node-addon-api`.
  - Build tmi.cxx using `node-gyp configure` and `node-gyp build`.
  - Build your own twitch bot using a make system of choice, as a shared library.  Note that your binary needs to
     dynamicaly link to the shared library found in `tmi_cxx/build/Release/tmi_cxx.node`.
