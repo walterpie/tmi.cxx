@@ -319,6 +319,42 @@ extern "C" void tmi_on_whisper(TmiClient *client, on_whisper_t callback) {
     ((TmixxClient *) client)->on_whisper(callback);
 }
 
+extern "C" void tmi_del_object(TmiObject *object) {
+    delete (TmixxObject *) object;
+}
+
+extern "C" int tmi_object_is_object(TmiObject *object) {
+    return (int) ((TmixxObject *) object)->is_object();
+}
+
+extern "C" int tmi_object_is_array(TmiObject *object) {
+    return (int) ((TmixxObject *) object)->is_array();
+}
+
+extern "C" int tmi_object_is_string(TmiObject *object) {
+    return (int) ((TmixxObject *) object)->is_string();
+}
+
+extern "C" TmiObject *tmi_object_to_object(TmiObject *object) {
+    return (TmiObject *) ((TmixxObject *) object)->to_object();
+}
+
+extern "C" TmiObject *tmi_object_to_array(TmiObject *object) {
+    return (TmiObject *) ((TmixxObject *) object)->to_array();
+}
+
+extern "C" char *tmi_object_to_string(TmiObject *object) {
+    return (char *) ((TmixxObject *) object)->to_string();
+}
+
+extern "C" TmiObject *tmi_object_index(TmiObject *object, size_t idx) {
+    return (TmiObject *) (*(TmixxObject *) object)[idx];
+}
+
+extern "C" TmiObject *tmi_object_get(TmiObject *object, char *str) {
+    return (TmiObject *) (*(TmixxObject *) object)[str];
+}
+
 Persistent<Function> TmixxPromise::constructor;
 
 TmixxPromise::TmixxPromise(TmixxClient* _client, Isolate* _isolate, Local<Context> _context, Persistent<Object, CopyablePersistentTraits<Object>> _promise) :
@@ -432,6 +468,109 @@ void TmixxPromise::or_else(or_else_t callback) {
     or_else_fn->CallAsFunction(this->context, this->promise.Get(this->isolate), argc, argv).ToLocalChecked();
 
     delete this;
+}
+
+Persistent<Function> TmixxObject::constructor;
+
+TmixxObject::TmixxObject(TmixxClient* _client, Isolate* _isolate, Local<Context> _context, Persistent<Object, CopyablePersistentTraits<Object>> _object) :
+    client(_client),
+    object(_object),
+    isolate(_isolate),
+    context(_context)
+{ }
+
+TmixxObject::~TmixxObject() {}
+
+void TmixxObject::Init(Local<Object> exports) {
+    Isolate* isolate = exports->GetIsolate();
+
+    // Prepare constructor template
+    Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, TmixxObject::New);
+    tpl->SetClassName(String::NewFromUtf8(
+        isolate, "TmixxObject", NewStringType::kNormal).ToLocalChecked());
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
+
+    Local<Context> context = isolate->GetCurrentContext();
+    constructor.Reset(isolate, tpl->GetFunction(context).ToLocalChecked());
+    exports->Set(context, String::NewFromUtf8(
+        isolate, "TmixxObject", NewStringType::kNormal).ToLocalChecked(),
+                 tpl->GetFunction(context).ToLocalChecked()).FromJust();
+}
+
+void TmixxObject::New(const FunctionCallbackInfo<Value>& args) {
+    if (args.IsConstructCall()) {
+        // Invoked as constructor: `new TmixxObject(...)`
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args[0]->ToObject(context).ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+        auto object = args[1]->ToObject(context).ToLocalChecked();
+        TmixxObject* obj = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, object));
+        obj->Wrap(args.This());
+        args.GetReturnValue().Set(args.This());
+    } else {
+        // TODO: throw exception
+    }
+}
+
+bool TmixxObject::is_object() {
+    return true;
+}
+
+bool TmixxObject::is_array() {
+    return this->object.Get(this->isolate)->IsArray();
+}
+
+bool TmixxObject::is_string() {
+    return this->object.Get(this->isolate)->IsString();
+}
+
+TmixxObject* TmixxObject::to_object() {
+    if (this->is_object()) {
+        return this;
+    } else {
+        return nullptr;
+    }
+}
+
+TmixxObject* TmixxObject::to_array() {
+    if (this->is_array()) {
+        return this;
+    } else {
+        return nullptr;
+    }
+}
+
+char* TmixxObject::to_string() {
+    if (this->is_string()) {
+        auto str = this->object.Get(this->isolate).As<Value>()->ToString(this->context).ToLocalChecked();
+        auto buf = new char[str->Utf8Length(isolate) + 1]();
+        str->WriteUtf8(isolate, buf, str->Utf8Length(isolate));
+        return buf;
+    } else {
+        return nullptr;
+    }
+}
+
+TmixxObject* TmixxObject::operator [](size_t idx) {
+    auto object = this->object
+        .Get(this->isolate)
+        ->Get(this->context, (int) idx)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxObject(this->client, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, object));
+}
+
+TmixxObject* TmixxObject::operator [](char* str) {
+    auto key = String::NewFromUtf8(this->isolate, str, NewStringType::kNormal).ToLocalChecked();
+    auto field = this->object
+        .Get(this->isolate)
+        ->Get(this->context, key)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxObject(this->client, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, field));
 }
 
 Persistent<Function> TmixxClient::constructor;

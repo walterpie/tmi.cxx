@@ -63,6 +63,17 @@ void tmi_connect(TmiClient *client);
 TmiPromise *tmi_promise_and_then(TmiPromise *promise, and_then_t and_then);
 void tmi_promise_or_else(TmiPromise *promise, or_else_t or_else);
 
+int tmi_object_is_object(TmiObject *object);
+int tmi_object_is_array(TmiObject *object);
+int tmi_object_is_string(TmiObject *object);
+
+TmiObject *tmi_object_to_object(TmiObject *object);
+TmiObject *tmi_object_to_array(TmiObject *object);
+char *tmi_object_to_string(TmiObject *object);
+
+TmiObject *tmi_object_index(TmiObject *object, size_t idx);
+TmiObject *tmi_object_get(TmiObject *object, char *str);
+
 TmiPromise *tmi_client_action(TmiClient *client);
 TmiPromise *tmi_client_ban(TmiClient *client);
 TmiPromise *tmi_client_clear(TmiClient *client);
@@ -150,6 +161,7 @@ namespace tmi_cxx {
     using namespace v8;
 
     typedef class TmixxPromise TmixxPromise;
+    typedef class TmixxObject TmixxObject;
     typedef class TmixxClient TmixxClient;
 
     class TmixxPromise : public node::ObjectWrap {
@@ -175,6 +187,36 @@ namespace tmi_cxx {
 
         TmixxPromise *and_then(and_then_t cb);
         void or_else(or_else_t cb);
+    };
+
+    class TmixxObject : public node::ObjectWrap {
+    private:
+        TmixxClient *client;
+        Persistent<Object, CopyablePersistentTraits<Object>> object;
+
+        static void New(const FunctionCallbackInfo<Value>& args);
+        static Persistent<Function> constructor;
+
+    public:
+        Isolate* isolate;
+        Local<Context> context;
+        Local<Object> obj;
+
+        explicit TmixxObject(TmixxClient *client, Isolate* isolate, Local<Context> context, Persistent<Object, CopyablePersistentTraits<Object>> object);
+        ~TmixxObject();
+
+        static void Init(Local<Object> exports);
+
+        bool is_object();
+        bool is_array();
+        bool is_string();
+
+        TmixxObject* to_object();
+        TmixxObject* to_array();
+        char* to_string();
+
+        TmixxObject* operator [](size_t idx);
+        TmixxObject* operator [](char* str);
     };
 
     class TmixxClient : public node::ObjectWrap {
