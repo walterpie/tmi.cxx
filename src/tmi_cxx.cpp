@@ -565,48 +565,28 @@ bool TmixxObject::is_string() {
 }
 
 TmixxObject* TmixxObject::to_object() {
-    if (this->is_object()) {
-        return this;
-    } else {
-        return nullptr;
-    }
+    return this;
 }
 
 double TmixxObject::to_number() {
-    if (this->is_number()) {
-        auto num = this->object.Get(this->isolate)->ToNumber(this->context).ToLocalChecked();
-        return num->Value();
-    } else {
-        return NAN;
-    }
+    auto num = this->object.Get(this->isolate)->ToNumber(this->context).ToLocalChecked();
+    return num->Value();
 }
 
 bool TmixxObject::to_bool() {
-    if (this->is_bool()) {
-        auto boolean = this->object.Get(this->isolate)->ToBoolean(this->isolate);
-        return boolean->Value();
-    } else {
-        return false;
-    }
+    auto boolean = this->object.Get(this->isolate)->ToBoolean(this->isolate);
+    return boolean->Value();
 }
 
 TmixxObject* TmixxObject::to_array() {
-    if (this->is_array()) {
-        return this;
-    } else {
-        return nullptr;
-    }
+    return this;
 }
 
 char* TmixxObject::to_string() {
-    if (this->is_string()) {
-        auto str = this->object.Get(this->isolate)->ToString(this->context).ToLocalChecked();
-        auto buf = new char[str->Utf8Length(isolate) + 1]();
-        str->WriteUtf8(isolate, buf, str->Utf8Length(isolate));
-        return buf;
-    } else {
-        return nullptr;
-    }
+    auto str = this->object.Get(this->isolate)->ToString(this->context).ToLocalChecked();
+    auto buf = new char[str->Utf8Length(isolate) + 1]();
+    str->WriteUtf8(isolate, buf, str->Utf8Length(isolate));
+    return buf;
 }
 
 TmixxObject* TmixxObject::operator [](size_t idx) {
