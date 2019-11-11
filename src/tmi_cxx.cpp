@@ -327,6 +327,14 @@ extern "C" int tmi_object_is_object(TmiObject *object) {
     return (int) ((TmixxObject *) object)->is_object();
 }
 
+extern "C" int tmi_object_is_number(TmiObject *object) {
+    return (int) ((TmixxObject *) object)->is_number();
+}
+
+extern "C" int tmi_object_is_bool(TmiObject *object) {
+    return (int) ((TmixxObject *) object)->is_bool();
+}
+
 extern "C" int tmi_object_is_array(TmiObject *object) {
     return (int) ((TmixxObject *) object)->is_array();
 }
@@ -337,6 +345,14 @@ extern "C" int tmi_object_is_string(TmiObject *object) {
 
 extern "C" TmiObject *tmi_object_to_object(TmiObject *object) {
     return (TmiObject *) ((TmixxObject *) object)->to_object();
+}
+
+extern "C" double tmi_object_to_number(TmiObject *object) {
+    return ((TmixxObject *) object)->to_number();
+}
+
+extern "C" int tmi_object_to_bool(TmiObject *object) {
+    return (int) ((TmixxObject *) object)->to_bool();
 }
 
 extern "C" TmiObject *tmi_object_to_array(TmiObject *object) {
@@ -514,7 +530,15 @@ void TmixxObject::New(const FunctionCallbackInfo<Value>& args) {
 }
 
 bool TmixxObject::is_object() {
-    return true;
+    return this->object.Get(this->isolate)->IsObject();
+}
+
+bool TmixxObject::is_number() {
+    return this->object.Get(this->isolate)->IsNumber();
+}
+
+bool TmixxObject::is_bool() {
+    return this->object.Get(this->isolate)->IsBoolean();
 }
 
 bool TmixxObject::is_array() {
@@ -533,6 +557,24 @@ TmixxObject* TmixxObject::to_object() {
     }
 }
 
+double TmixxObject::to_number() {
+    if (this->is_number()) {
+        auto num = this->object.Get(this->isolate)->ToNumber(this->context).ToLocalChecked();
+        return num->Value();
+    } else {
+        return nullptr;
+    }
+}
+
+bool TmixxObject::to_bool() {
+    if (this->is_bool()) {
+        auto boolean = this->object.Get(this->isolate)->ToBoolean(this->context).ToLocalChecked();
+        return boolean->Value();
+    } else {
+        return nullptr;
+    }
+}
+
 TmixxObject* TmixxObject::to_array() {
     if (this->is_array()) {
         return this;
@@ -543,7 +585,7 @@ TmixxObject* TmixxObject::to_array() {
 
 char* TmixxObject::to_string() {
     if (this->is_string()) {
-        auto str = this->object.Get(this->isolate).As<Value>()->ToString(this->context).ToLocalChecked();
+        auto str = this->object.Get(this->isolate)->ToString(this->context).ToLocalChecked();
         auto buf = new char[str->Utf8Length(isolate) + 1]();
         str->WriteUtf8(isolate, buf, str->Utf8Length(isolate));
         return buf;

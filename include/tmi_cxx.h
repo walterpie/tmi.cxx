@@ -66,10 +66,14 @@ void tmi_promise_or_else(TmiPromise *promise, or_else_t or_else);
 void tmi_del_object(TmiObject *object);
 
 int tmi_object_is_object(TmiObject *object);
+int tmi_object_is_number(TmiObject *object);
+int tmi_object_is_bool(TmiObject *object);
 int tmi_object_is_array(TmiObject *object);
 int tmi_object_is_string(TmiObject *object);
 
 TmiObject *tmi_object_to_object(TmiObject *object);
+double tmi_object_to_number(TmiObject *object);
+int tmi_object_to_bool(TmiObject *object);
 TmiObject *tmi_object_to_array(TmiObject *object);
 char *tmi_object_to_string(TmiObject *object);
 
@@ -210,10 +214,14 @@ namespace tmi_cxx {
         static void Init(Local<Object> exports);
 
         bool is_object();
+        bool is_number();
+        bool is_bool();
         bool is_array();
         bool is_string();
 
         TmixxObject* to_object();
+        double to_number();
+        bool to_bool();
         TmixxObject* to_array();
         char* to_string();
 
