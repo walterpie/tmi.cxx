@@ -4,16 +4,16 @@
 
 using namespace tmi_cxx;
 
-extern "C" void tmi_connect(TmiClient *client, void *userdata) {
-    ((TmixxClient *) client)->connect(userdata);
+extern "C" TmiPromise *tmi_connect(TmiClient *client, void *userdata) {
+    return (TmiPromise *)((TmixxClient *) client)->connect(userdata);
+}
+
+extern "C" TmiPromise *tmi_disconnect(TmiClient *client) {
+    return (TmiPromise *)((TmixxClient *) client)->disconnect();
 }
 
 extern "C" void *tmi_userdata(TmiClient *client) {
     return ((TmixxClient *) client)->userdata();
-}
-
-extern "C" void tmi_del_promise(TmiPromise *promise) {
-    delete (TmixxPromise *) promise;
 }
 
 extern "C" TmiPromise *tmi_promise_and_then(TmiPromise *promise, and_then_t and_then) {
@@ -24,136 +24,132 @@ extern "C" void tmi_promise_or_else(TmiPromise *promise, or_else_t or_else) {
     ((TmixxPromise *) promise)->or_else(or_else);
 }
 
-extern "C" TmiPromise *tmi_client_action(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->action();
+TmiPromise *tmi_client_action(TmiClient *client, char *channel, char *message) {
+    return (TmiPromise *)((TmixxClient *) client)->action(channel, message);
 }
 
-extern "C" TmiPromise *tmi_client_ban(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->ban();
+TmiPromise *tmi_client_ban(TmiClient *client, char *channel, char *username, char *reason /* optional */) {
+    return (TmiPromise *)((TmixxClient *) client)->ban(channel, username, reason /* optional */);
 }
 
-extern "C" TmiPromise *tmi_client_clear(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->clear();
+TmiPromise *tmi_client_clear(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->clear(channel);
 }
 
-extern "C" TmiPromise *tmi_client_color(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->color();
+TmiPromise *tmi_client_color(TmiClient *client, char *color) {
+    return (TmiPromise *)((TmixxClient *) client)->color(color);
 }
 
-extern "C" TmiPromise *tmi_client_commercial(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->commercial();
+TmiPromise *tmi_client_commercial(TmiClient *client, char *channel, int seconds) {
+    return (TmiPromise *)((TmixxClient *) client)->commercial(channel, seconds);
 }
 
-extern "C" TmiPromise *tmi_client_deletemessage(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->deletemessage();
+TmiPromise *tmi_client_deletemessage(TmiClient *client, char *channel, char *uuid) {
+    return (TmiPromise *)((TmixxClient *) client)->deletemessage(channel, uuid);
 }
 
-extern "C" TmiPromise *tmi_client_disconnect(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->disconnect();
+TmiPromise *tmi_client_emoteonly(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->emoteonly(channel);
 }
 
-extern "C" TmiPromise *tmi_client_emoteonly(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->emoteonly();
+TmiPromise *tmi_client_emoteonlyoff(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->emoteonlyoff(channel);
 }
 
-extern "C" TmiPromise *tmi_client_emoteonlyoff(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->emoteonlyoff();
+TmiPromise *tmi_client_followersonly(TmiClient *client, char *channel, int length /* optional */) {
+    return (TmiPromise *)((TmixxClient *) client)->followersonly(channel, length /* optional */);
 }
 
-extern "C" TmiPromise *tmi_client_followersonly(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->followersonly();
+TmiPromise *tmi_client_followersonlyoff(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->followersonlyoff(channel);
 }
 
-extern "C" TmiPromise *tmi_client_followersonlyoff(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->followersonlyoff();
+TmiPromise *tmi_client_host(TmiClient *client, char *channel, char *target) {
+    return (TmiPromise *)((TmixxClient *) client)->host(channel, target);
 }
 
-extern "C" TmiPromise *tmi_client_host(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->host();
+TmiPromise *tmi_client_join(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->join(channel);
 }
 
-extern "C" TmiPromise *tmi_client_join(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->join();
+TmiPromise *tmi_client_mod(TmiClient *client, char *channel, char *username) {
+    return (TmiPromise *)((TmixxClient *) client)->mod(channel, username);
 }
 
-extern "C" TmiPromise *tmi_client_mod(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->mod();
+TmiPromise *tmi_client_mods(TmiClient *client, char *mods) {
+    return (TmiPromise *)((TmixxClient *) client)->mods(mods);
 }
 
-extern "C" TmiPromise *tmi_client_mods(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->mods();
+TmiPromise *tmi_client_part(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->part(channel);
 }
 
-extern "C" TmiPromise *tmi_client_part(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->part();
-}
-
-extern "C" TmiPromise *tmi_client_ping(TmiClient *client) {
+TmiPromise *tmi_client_ping(TmiClient *client) {
     return (TmiPromise *)((TmixxClient *) client)->ping();
 }
 
-extern "C" TmiPromise *tmi_client_r9kbeta(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->r9kbeta();
+TmiPromise *tmi_client_r9kbeta(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->r9kbeta(channel);
 }
 
-extern "C" TmiPromise *tmi_client_r9kbetaoff(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->r9kbetaoff();
+TmiPromise *tmi_client_r9kbetaoff(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->r9kbetaoff(channel);
 }
 
-extern "C" TmiPromise *tmi_client_raw(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->raw();
+TmiPromise *tmi_client_raw(TmiClient *client, char *msg) {
+    return (TmiPromise *)((TmixxClient *) client)->raw(msg);
 }
 
-extern "C" TmiPromise *tmi_client_say(TmiClient *client, char *channel, char *msg) {
+TmiPromise *tmi_client_say(TmiClient *client, char *channel, char *msg) {
     return (TmiPromise *)((TmixxClient *) client)->say(channel, msg);
 }
 
-extern "C" TmiPromise *tmi_client_slow(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->slow();
+TmiPromise *tmi_client_slow(TmiClient *client, char *channel, int length /* optional */) {
+    return (TmiPromise *)((TmixxClient *) client)->slow(channel, length /* optional */);
 }
 
-extern "C" TmiPromise *tmi_client_slowoff(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->slowoff();
+TmiPromise *tmi_client_slowoff(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->slowoff(channel);
 }
 
-extern "C" TmiPromise *tmi_client_subscribers(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->subscribers();
+TmiPromise *tmi_client_subscribers(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->subscribers(channel);
 }
 
-extern "C" TmiPromise *tmi_client_subscribersoff(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->subscribersoff();
+TmiPromise *tmi_client_subscribersoff(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->subscribersoff(channel);
 }
 
-extern "C" TmiPromise *tmi_client_timeout(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->timeout();
+TmiPromise *tmi_client_timeout(TmiClient *client, char *channel, char *username, int length /* optional */, char *reason /* optional */) {
+    return (TmiPromise *)((TmixxClient *) client)->timeout(channel, username, length /* optional */, reason /* optional */);
 }
 
-extern "C" TmiPromise *tmi_client_unban(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->unban();
+TmiPromise *tmi_client_unban(TmiClient *client, char *channel, char *username) {
+    return (TmiPromise *)((TmixxClient *) client)->unban(channel, username);
 }
 
-extern "C" TmiPromise *tmi_client_unhost(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->unhost();
+TmiPromise *tmi_client_unhost(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->unhost(channel);
 }
 
-extern "C" TmiPromise *tmi_client_unmod(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->unmod();
+TmiPromise *tmi_client_unmod(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->unmod(channel);
 }
 
-extern "C" TmiPromise *tmi_client_unvip(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->unvip();
+TmiPromise *tmi_client_unvip(TmiClient *client, char *channel, char *username) {
+    return (TmiPromise *)((TmixxClient *) client)->unvip(channel, username);
 }
 
-extern "C" TmiPromise *tmi_client_vip(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->vip();
+TmiPromise *tmi_client_vip(TmiClient *client, char *channel, char *username) {
+    return (TmiPromise *)((TmixxClient *) client)->vip(channel, username);
 }
 
-extern "C" TmiPromise *tmi_client_vips(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->vips();
+TmiPromise *tmi_client_vips(TmiClient *client, char *channel) {
+    return (TmiPromise *)((TmixxClient *) client)->vips(channel);
 }
 
-extern "C" TmiPromise *tmi_client_whisper(TmiClient *client) {
-    return (TmiPromise *)((TmixxClient *) client)->whisper();
+TmiPromise *tmi_client_whisper(TmiClient *client, char *username, char *msg) {
+    return (TmiPromise *)((TmixxClient *) client)->whisper(username, msg);
 }
 
 extern "C" void tmi_on_action(TmiClient *client, on_action_t callback) {
@@ -436,10 +432,12 @@ TmixxPromise *TmixxPromise::and_then(and_then_t callback) {
             ->ToObject(context)
             .ToLocalChecked();
         auto promise = node::ObjectWrap::Unwrap<TmixxPromise>(promise_obj);
-        auto result = (TmixxPromise*) promise->cb_and_then((TmiClient*) promise->client, nullptr);
-        auto return_value = Object::New(isolate);
-        result->Wrap(return_value);
-        args.GetReturnValue().Set(return_value);
+
+        auto obj_obj = args[0]->ToObject(context).ToLocalChecked();
+        auto obj = new TmixxObject(promise->client, promise->isolate, promise->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, obj_obj));
+
+        auto result = (TmixxPromise*) promise->cb_and_then((TmiClient*) promise->client, (TmiObject*) obj);
+        args.GetReturnValue().Set(result->promise.Get(isolate));
     }, promise_value);
     auto fn = tpl->GetFunction(this->context).ToLocalChecked();
 
@@ -476,7 +474,11 @@ void TmixxPromise::or_else(or_else_t callback) {
             ->ToObject(context)
             .ToLocalChecked();
         auto promise = node::ObjectWrap::Unwrap<TmixxPromise>(promise_obj);
-        promise->cb_or_else((TmiClient*) promise->client, nullptr);
+
+        auto obj_obj = args[0]->ToObject(context).ToLocalChecked();
+        auto obj = new TmixxObject(promise->client, promise->isolate, promise->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, obj_obj));
+
+        promise->cb_or_else((TmiClient*) promise->client, (TmiObject*) obj);
     }, promise_value);
     auto fn = tpl->GetFunction(this->context).ToLocalChecked();
 
@@ -654,7 +656,7 @@ void TmixxClient::New(const FunctionCallbackInfo<Value>& args) {
     }
 }
 
-void TmixxClient::connect(void* userdata) {
+TmixxPromise *TmixxClient::connect(void* userdata) {
     this->_userdata = userdata;
 
     auto client = this->client.Get(this->isolate);
@@ -667,91 +669,441 @@ void TmixxClient::connect(void* userdata) {
 
     const unsigned argc = 0;
     Local<Value> argv[argc] = {};
-    connect_fn->CallAsFunction(context, client, argc, argv).ToLocalChecked();
+    auto promise = connect_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
+}
+
+TmixxPromise* TmixxClient::disconnect() {
+    auto client = this->client.Get(this->isolate);
+    auto disconnect = String::NewFromUtf8(this->isolate, "disconnect", NewStringType::kNormal).ToLocalChecked();
+    auto disconnect_fn = client
+        ->Get(this->context, disconnect)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 0;
+    Local<Value> argv[argc] = {};
+    auto promise = disconnect_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
 void* TmixxClient::userdata() {
     return this->_userdata;
 }
 
-TmixxPromise* TmixxClient::action() {
-    return nullptr;
+TmixxPromise* TmixxClient::action(char* channel, char* message) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto msg = String::NewFromUtf8(this->isolate, message, NewStringType::kNormal).ToLocalChecked();
+    auto action = String::NewFromUtf8(this->isolate, "action", NewStringType::kNormal).ToLocalChecked();
+    auto action_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, action)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, msg};
+    auto promise = action_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::ban() {
-    return nullptr;
+TmixxPromise* TmixxClient::ban(char* channel, char* username, char* _reason /* optional */) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    if (_reason) {
+        auto reason = String::NewFromUtf8(this->isolate, _reason, NewStringType::kNormal).ToLocalChecked();
+        auto ban = String::NewFromUtf8(this->isolate, "ban", NewStringType::kNormal).ToLocalChecked();
+        auto ban_fn = this->client
+            .Get(this->isolate)
+            ->Get(this->context, ban)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+
+        const unsigned argc = 3;
+        Local<Value> argv[argc] = {chan, user, reason};
+        auto promise = ban_fn
+            ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+        return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
+    } else {
+        auto ban = String::NewFromUtf8(this->isolate, "ban", NewStringType::kNormal).ToLocalChecked();
+        auto ban_fn = this->client
+            .Get(this->isolate)
+            ->Get(this->context, ban)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+
+        const unsigned argc = 2;
+        Local<Value> argv[argc] = {chan, user};
+        auto promise = ban_fn
+            ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+        return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
+    }
 }
 
-TmixxPromise* TmixxClient::clear() {
-    return nullptr;
+TmixxPromise* TmixxClient::clear(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto clear = String::NewFromUtf8(this->isolate, "clear", NewStringType::kNormal).ToLocalChecked();
+    auto clear_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, clear)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = clear_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::color() {
-    return nullptr;
+TmixxPromise* TmixxClient::color(char* _color) {
+    auto col = String::NewFromUtf8(this->isolate, _color, NewStringType::kNormal).ToLocalChecked();
+    auto color = String::NewFromUtf8(this->isolate, "color", NewStringType::kNormal).ToLocalChecked();
+    auto color_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, color)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {col};
+    auto promise = color_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::commercial() {
-    return nullptr;
+TmixxPromise* TmixxClient::commercial(char* channel, int seconds) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto secs = Number::New(this->isolate, seconds);
+    auto commercial = String::NewFromUtf8(this->isolate, "commercial", NewStringType::kNormal).ToLocalChecked();
+    auto commercial_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, commercial)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, secs};
+    auto promise = commercial_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::deletemessage() {
-    return nullptr;
+TmixxPromise* TmixxClient::deletemessage(char* channel, char* _uuid) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto uuid = String::NewFromUtf8(this->isolate, _uuid, NewStringType::kNormal).ToLocalChecked();
+    auto deletemessage = String::NewFromUtf8(this->isolate, "deletemessage", NewStringType::kNormal).ToLocalChecked();
+    auto deletemessage_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, deletemessage)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, uuid};
+    auto promise = deletemessage_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::disconnect() {
-    return nullptr;
+TmixxPromise* TmixxClient::emoteonly(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto emoteonly = String::NewFromUtf8(this->isolate, "emoteonly", NewStringType::kNormal).ToLocalChecked();
+    auto emoteonly_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, emoteonly)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = emoteonly_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::emoteonly() {
-    return nullptr;
+TmixxPromise* TmixxClient::emoteonlyoff(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto emoteonlyoff = String::NewFromUtf8(this->isolate, "emoteonlyoff", NewStringType::kNormal).ToLocalChecked();
+    auto emoteonlyoff_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, emoteonlyoff)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = emoteonlyoff_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::emoteonlyoff() {
-    return nullptr;
+TmixxPromise* TmixxClient::followersonly(char* channel, int length /* optional */) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto len = Number::New(this->isolate, length);
+    auto followersonly = String::NewFromUtf8(this->isolate, "followersonly", NewStringType::kNormal).ToLocalChecked();
+    auto followersonly_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, followersonly)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, len};
+    auto promise = followersonly_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::followersonly() {
-    return nullptr;
+TmixxPromise* TmixxClient::followersonlyoff(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto followersonlyoff = String::NewFromUtf8(this->isolate, "followersonlyoff", NewStringType::kNormal).ToLocalChecked();
+    auto followersonlyoff_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, followersonlyoff)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = followersonlyoff_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::followersonlyoff() {
-    return nullptr;
+TmixxPromise* TmixxClient::host(char* channel, char* _target) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto target = String::NewFromUtf8(this->isolate, _target, NewStringType::kNormal).ToLocalChecked();
+    auto host = String::NewFromUtf8(this->isolate, "host", NewStringType::kNormal).ToLocalChecked();
+    auto host_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, host)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, target};
+    auto promise = host_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::host() {
-    return nullptr;
+TmixxPromise* TmixxClient::join(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto join = String::NewFromUtf8(this->isolate, "join", NewStringType::kNormal).ToLocalChecked();
+    auto join_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, join)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = join_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::join() {
-    return nullptr;
+TmixxPromise* TmixxClient::mod(char* channel, char* username) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    auto mod = String::NewFromUtf8(this->isolate, "mod", NewStringType::kNormal).ToLocalChecked();
+    auto mod_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, mod)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, user};
+    auto promise = mod_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::mod() {
-    return nullptr;
+TmixxPromise* TmixxClient::mods(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto mods = String::NewFromUtf8(this->isolate, "mods", NewStringType::kNormal).ToLocalChecked();
+    auto mods_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, mods)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = mods_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::mods() {
-    return nullptr;
-}
+TmixxPromise* TmixxClient::part(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto part = String::NewFromUtf8(this->isolate, "part", NewStringType::kNormal).ToLocalChecked();
+    auto part_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, part)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
 
-TmixxPromise* TmixxClient::part() {
-    return nullptr;
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = part_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
 TmixxPromise* TmixxClient::ping() {
-    return nullptr;
+    auto ping = String::NewFromUtf8(this->isolate, "ping", NewStringType::kNormal).ToLocalChecked();
+    auto ping_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, ping)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 0;
+    Local<Value> argv[argc] = {};
+    auto promise = ping_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::r9kbeta() {
-    return nullptr;
+TmixxPromise* TmixxClient::r9kbeta(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto r9kbeta = String::NewFromUtf8(this->isolate, "r9kbeta", NewStringType::kNormal).ToLocalChecked();
+    auto r9kbeta_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, r9kbeta)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = r9kbeta_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::r9kbetaoff() {
-    return nullptr;
+TmixxPromise* TmixxClient::r9kbetaoff(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto r9kbetaoff = String::NewFromUtf8(this->isolate, "r9kbetaoff", NewStringType::kNormal).ToLocalChecked();
+    auto r9kbetaoff_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, r9kbetaoff)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = r9kbetaoff_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::raw() {
-    return nullptr;
+TmixxPromise* TmixxClient::raw(char* _msg) {
+    auto msg = String::NewFromUtf8(this->isolate, _msg, NewStringType::kNormal).ToLocalChecked();
+    auto raw = String::NewFromUtf8(this->isolate, "raw", NewStringType::kNormal).ToLocalChecked();
+    auto raw_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, raw)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {msg};
+    auto promise = raw_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
 TmixxPromise *TmixxClient::say(char* channel, char* message) {
@@ -775,103 +1127,1014 @@ TmixxPromise *TmixxClient::say(char* channel, char* message) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::slow() {
-    return nullptr;
+TmixxPromise* TmixxClient::slow(char* channel, int length /* optional */) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto len = Number::New(this->isolate, length);
+    auto slow = String::NewFromUtf8(this->isolate, "slow", NewStringType::kNormal).ToLocalChecked();
+    auto slow_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, slow)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, len};
+    auto promise = slow_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::slowoff() {
-    return nullptr;
+TmixxPromise* TmixxClient::slowoff(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto slowoff = String::NewFromUtf8(this->isolate, "slowoff", NewStringType::kNormal).ToLocalChecked();
+    auto slowoff_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, slowoff)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = slowoff_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::subscribers() {
-    return nullptr;
+TmixxPromise* TmixxClient::subscribers(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto subscribers = String::NewFromUtf8(this->isolate, "subscribers", NewStringType::kNormal).ToLocalChecked();
+    auto subscribers_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, subscribers)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = subscribers_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::subscribersoff() {
-    return nullptr;
+TmixxPromise* TmixxClient::subscribersoff(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto subscribersoff = String::NewFromUtf8(this->isolate, "subscribersoff", NewStringType::kNormal).ToLocalChecked();
+    auto subscribersoff_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, subscribersoff)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = subscribersoff_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::timeout() {
-    return nullptr;
+TmixxPromise* TmixxClient::timeout(char* channel, char* username, int length /* optional */, char* _reason /* optional */) {
+    if (length == -1) {
+        length = 300;
+    }
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    auto len = Number::New(this->isolate, length);
+    if (_reason) {
+        auto reason = String::NewFromUtf8(this->isolate, _reason, NewStringType::kNormal).ToLocalChecked();
+        auto timeout = String::NewFromUtf8(this->isolate, "timeout", NewStringType::kNormal).ToLocalChecked();
+        auto timeout_fn = this->client
+            .Get(this->isolate)
+            ->Get(this->context, timeout)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+
+        const unsigned argc = 4;
+        Local<Value> argv[argc] = {chan, user, len, reason};
+        auto promise = timeout_fn
+            ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+        return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
+    } else {
+        auto timeout = String::NewFromUtf8(this->isolate, "timeout", NewStringType::kNormal).ToLocalChecked();
+        auto timeout_fn = this->client
+            .Get(this->isolate)
+            ->Get(this->context, timeout)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+
+        const unsigned argc = 3;
+        Local<Value> argv[argc] = {chan, user, len};
+        auto promise = timeout_fn
+            ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+            .ToLocalChecked()
+            ->ToObject(this->context)
+            .ToLocalChecked();
+        return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
+    }
 }
 
-TmixxPromise* TmixxClient::unban() {
-    return nullptr;
+TmixxPromise* TmixxClient::unban(char* channel, char* username) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    auto unban = String::NewFromUtf8(this->isolate, "unban", NewStringType::kNormal).ToLocalChecked();
+    auto unban_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, unban)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, user};
+    auto promise = unban_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::unhost() {
-    return nullptr;
+TmixxPromise* TmixxClient::unhost(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto unhost = String::NewFromUtf8(this->isolate, "unhost", NewStringType::kNormal).ToLocalChecked();
+    auto unhost_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, unhost)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = unhost_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::unmod() {
-    return nullptr;
+TmixxPromise* TmixxClient::unmod(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto unmod = String::NewFromUtf8(this->isolate, "unmod", NewStringType::kNormal).ToLocalChecked();
+    auto unmod_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, unmod)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = unmod_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::unvip() {
-    return nullptr;
+TmixxPromise* TmixxClient::unvip(char* channel, char* username) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    auto unvip = String::NewFromUtf8(this->isolate, "unvip", NewStringType::kNormal).ToLocalChecked();
+    auto unvip_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, unvip)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, user};
+    auto promise = unvip_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::vip() {
-    return nullptr;
+TmixxPromise* TmixxClient::vip(char* channel, char* username) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    auto vip = String::NewFromUtf8(this->isolate, "vip", NewStringType::kNormal).ToLocalChecked();
+    auto vip_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, vip)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {chan, user};
+    auto promise = vip_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::vips() {
-    return nullptr;
+TmixxPromise* TmixxClient::vips(char* channel) {
+    auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
+    auto vips = String::NewFromUtf8(this->isolate, "vips", NewStringType::kNormal).ToLocalChecked();
+    auto vips_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, vips)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 1;
+    Local<Value> argv[argc] = {chan};
+    auto promise = vips_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::whisper() {
-    return nullptr;
+TmixxPromise* TmixxClient::whisper(char* username, char* _msg) {
+    auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
+    auto msg = String::NewFromUtf8(this->isolate, _msg, NewStringType::kNormal).ToLocalChecked();
+    auto whisper = String::NewFromUtf8(this->isolate, "whisper", NewStringType::kNormal).ToLocalChecked();
+    auto whisper_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, whisper)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {user, msg};
+    auto promise = whisper_fn
+        ->CallAsFunction(this->context, this->client.Get(this->isolate), argc, argv)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+    return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
 void TmixxClient::on_action(on_action_t callback) {
+    this->cb_action = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        auto msg_str = args[2]->ToString(context).ToLocalChecked();
+        auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
+        msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
+
+        auto self = args[3]->ToBoolean(isolate)->Value();
+
+        client->cb_action((TmiClient*) client, channel_buf, (TmiObject*) userstate, msg_buf, self);
+
+        delete[] msg_buf;
+        delete userstate;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "action", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_action_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_action_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_anongiftpaidupgrade(on_anongiftpaidupgrade_t callback) {
+    this->cb_anongiftpaidupgrade = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[2]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_anongiftpaidupgrade((TmiClient*) client, channel_buf, username_buf, (TmiObject*) userstate);
+
+        delete userstate;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "anongiftpaidupgrade", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_anongiftpaidupgrade_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_anongiftpaidupgrade_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_ban(on_ban_t callback) {
+    this->cb_ban = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[2]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_ban((TmiClient*) client, channel_buf, username_buf, (TmiObject*) userstate);
+
+        delete userstate;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "ban", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_ban_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_ban_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_chat(on_chat_t callback) {
+    this->cb_chat = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[2]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        auto self = args[3]->ToBoolean(isolate)->Value();
+
+        client->cb_chat((TmiClient*) client, channel_buf, (TmiObject*) userstate, username_buf, self);
+
+        delete userstate;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "chat", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_chat_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_chat_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_cheer(on_cheer_t callback) {
+    this->cb_cheer = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        auto msg_str = args[2]->ToString(context).ToLocalChecked();
+        auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
+        msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
+
+        client->cb_cheer((TmiClient*) client, channel_buf, (TmiObject*) userstate, msg_buf);
+
+        delete[] msg_buf;
+        delete userstate;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "cheer", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_cheer_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_cheer_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_clearchat(on_clearchat_t callback) {
+    this->cb_clearchat = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        client->cb_clearchat((TmiClient*) client, channel_buf);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "clearchat", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_clearchat_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_clearchat_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_connected(on_connected_t callback) {
+    this->cb_connected = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto address_str = args[0]->ToString(context).ToLocalChecked();
+        auto address_buf = new char[address_str->Utf8Length(isolate) + 1]();
+        address_str->WriteUtf8(isolate, address_buf, address_str->Utf8Length(isolate));
+
+        auto port = args[1]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_connected((TmiClient*) client, address_buf, port);
+
+        delete[] address_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "connected", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_connected_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_connected_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_connecting(on_connecting_t callback) {
+    this->cb_connecting = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto address_str = args[0]->ToString(context).ToLocalChecked();
+        auto address_buf = new char[address_str->Utf8Length(isolate) + 1]();
+        address_str->WriteUtf8(isolate, address_buf, address_str->Utf8Length(isolate));
+
+        auto port = args[1]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_connecting((TmiClient*) client, address_buf, port);
+
+        delete[] address_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "connecting", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_connecting_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_connecting_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_disconnected(on_disconnected_t callback) {
+    this->cb_disconnected = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto reason_str = args[0]->ToString(context).ToLocalChecked();
+        auto reason_buf = new char[reason_str->Utf8Length(isolate) + 1]();
+        reason_str->WriteUtf8(isolate, reason_buf, reason_str->Utf8Length(isolate));
+
+        client->cb_disconnected((TmiClient*) client, reason_buf);
+
+        delete[] reason_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "disconnected", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_disconnected_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_disconnected_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_emoteonly(on_emoteonly_t callback) {
+    this->cb_emoteonly = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto enabled = args[1]->ToBoolean(isolate)->Value();
+
+        client->cb_emoteonly((TmiClient*) client, channel_buf, enabled);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "emoteonly", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_emoteonly_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_emoteonly_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_emotesets(on_emotesets_t callback) {
+    this->cb_emotesets = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto sets_str = args[0]->ToString(context).ToLocalChecked();
+        auto sets_buf = new char[sets_str->Utf8Length(isolate) + 1]();
+        sets_str->WriteUtf8(isolate, sets_buf, sets_str->Utf8Length(isolate));
+
+        auto obj_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto obj = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, obj_obj));
+
+        client->cb_emotesets((TmiClient*) client, sets_buf, (TmiObject*) obj);
+
+        delete obj;
+        delete[] sets_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "emotesets", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_emotesets_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_emotesets_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_followersonly(on_followersonly_t callback) {
+    this->cb_followersonly = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto enabled = args[1]->ToBoolean(isolate)->Value();
+
+        auto length = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_followersonly((TmiClient*) client, channel_buf, enabled, length);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "followersonly", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_followersonly_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_followersonly_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_giftpaidupgrade(on_giftpaidupgrade_t callback) {
+    this->cb_giftpaidupgrade = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto sender_str = args[2]->ToString(context).ToLocalChecked();
+        auto sender_buf = new char[sender_str->Utf8Length(isolate) + 1]();
+        sender_str->WriteUtf8(isolate, sender_buf, sender_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[3]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_giftpaidupgrade((TmiClient*) client, channel_buf, username_buf, sender_buf, (TmiObject*) userstate);
+
+        delete userstate;
+        delete[] sender_buf;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "giftpaidupgrade", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_giftpaidupgrade_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_giftpaidupgrade_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_hosted(on_hosted_t callback) {
+    this->cb_hosted = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto viewers = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        auto autohost = args[3]->ToBoolean(isolate)->Value();
+
+        client->cb_hosted((TmiClient*) client, channel_buf, username_buf, viewers, autohost);
+
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "hosted", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_hosted_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_hosted_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_hosting(on_hosting_t callback) {
+    this->cb_hosting = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto target_str = args[1]->ToString(context).ToLocalChecked();
+        auto target_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        target_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto viewers = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_hosting((TmiClient*) client, channel_buf, target_buf, viewers);
+
+        delete[] target_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "hosting", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_hosting_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_hosting_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_join(on_join_t callback) {
+    this->cb_join = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto self = args[2]->ToBoolean(isolate)->Value();
+
+        client->cb_join((TmiClient*) client, channel_buf, username_buf, self);
+
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "join", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_join_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_join_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_logon(on_logon_t callback) {
+    this->cb_logon = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        client->cb_logon((TmiClient*) client);
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "logon", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_logon_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_logon_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_message(on_message_t callback) {
@@ -904,6 +2167,7 @@ void TmixxClient::on_message(on_message_t callback) {
         client->cb_message((TmiClient*) client, channel_buf, (TmiObject*) userstate, msg_buf, self);
 
         delete[] channel_buf;
+        delete userstate;
         delete[] msg_buf;
     }, client_value);
     auto fn = tpl->GetFunction(this->context).ToLocalChecked();
@@ -923,73 +2187,1065 @@ void TmixxClient::on_message(on_message_t callback) {
 }
 
 void TmixxClient::on_messagedeleted(on_messagedeleted_t callback) {
+    this->cb_messagedeleted = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto deleted_str = args[2]->ToString(context).ToLocalChecked();
+        auto deleted_buf = new char[deleted_str->Utf8Length(isolate) + 1]();
+        deleted_str->WriteUtf8(isolate, deleted_buf, deleted_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[3]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_messagedeleted((TmiClient*) client, channel_buf, username_buf, deleted_buf, (TmiObject*) userstate);
+
+        delete userstate;
+        delete[] deleted_buf;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "messagedeleted", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_messagedeleted_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_messagedeleted_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_mod(on_mod_t callback) {
+    this->cb_mod = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        client->cb_mod((TmiClient*) client, channel_buf, username_buf);
+
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "mod", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_mod_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_mod_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_mods(on_mods_t callback) {
+    this->cb_mods = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto mods_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto mods = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, mods_obj));
+
+        client->cb_mods((TmiClient*) client, channel_buf, (TmiObject*) mods);
+
+        delete mods;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "mods", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_mods_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_mods_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_notice(on_notice_t callback) {
+    this->cb_notice = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto msgid_str = args[1]->ToString(context).ToLocalChecked();
+        auto msgid_buf = new char[msgid_str->Utf8Length(isolate) + 1]();
+        msgid_str->WriteUtf8(isolate, msgid_buf, msgid_str->Utf8Length(isolate));
+
+        auto msg_str = args[2]->ToString(context).ToLocalChecked();
+        auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
+        msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
+
+        client->cb_notice((TmiClient*) client, channel_buf, msgid_buf, msg_buf);
+
+        delete[] msg_buf;
+        delete[] msgid_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "notice", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_notice_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_notice_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_part(on_part_t callback) {
+    this->cb_part = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto self = args[2]->ToBoolean(isolate)->Value();
+
+        client->cb_part((TmiClient*) client, channel_buf, username_buf, self);
+
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "part", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_part_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_part_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_ping(on_ping_t callback) {
+    this->cb_ping = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        client->cb_ping((TmiClient*) client);
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "ping", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_ping_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_ping_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_pong(on_pong_t callback) {
+    this->cb_pong = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto latency = args[0]->ToNumber(context).ToLocalChecked()->Value();
+
+        client->cb_pong((TmiClient*) client, latency);
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "pong", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_pong_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_pong_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_r9kbeta(on_r9kbeta_t callback) {
+    this->cb_r9kbeta = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto enabled = args[1]->ToBoolean(isolate)->Value();
+
+        client->cb_r9kbeta((TmiClient*) client, channel_buf, enabled);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "r9kbeta", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_r9kbeta_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_r9kbeta_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_raided(on_raided_t callback) {
+    this->cb_raided = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto viewers = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_raided((TmiClient*) client, channel_buf, username_buf, viewers);
+
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "raided", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_raided_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_raided_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_raw_message(on_raw_message_t callback) {
+    this->cb_raw_message = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto msg_cloned_obj = args[0]->ToObject(context).ToLocalChecked();
+        auto msg_cloned = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, msg_cloned_obj));
+
+        auto msg_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto msg = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, msg_obj));
+
+        client->cb_raw_message((TmiClient*) client, (TmiObject*) msg_cloned, (TmiObject*) msg);
+
+        delete[] msg;
+        delete[] msg_cloned;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "raw_message", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_raw_message_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_raw_message_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_reconnect(on_reconnect_t callback) {
+    this->cb_reconnect = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        client->cb_reconnect((TmiClient*) client);
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "reconnect", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_reconnect_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_reconnect_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_resub(on_resub_t callback) {
+    this->cb_resub = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto streak = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        auto msg_str = args[3]->ToString(context).ToLocalChecked();
+        auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
+        msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[4]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        auto methods_obj = args[5]->ToObject(context).ToLocalChecked();
+        auto methods = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, methods_obj));
+
+        client->cb_resub((TmiClient*) client, channel_buf, username_buf, streak, msg_buf, (TmiObject*) userstate, (TmiObject*) methods);
+
+        delete methods;
+        delete userstate;
+        delete[] msg_buf;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "resub", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_resub_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_resub_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_roomstate(on_roomstate_t callback) {
+    this->cb_roomstate = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto state_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto state = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, state_obj));
+
+        client->cb_roomstate((TmiClient*) client, channel_buf, (TmiObject*) state);
+
+        delete state;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "roomstate", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_roomstate_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_roomstate_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_serverchange(on_serverchange_t callback) {
+    this->cb_serverchange = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        client->cb_serverchange((TmiClient*) client, channel_buf);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "serverchange", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_serverchange_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_serverchange_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_slowmode(on_slowmode_t callback) {
+    this->cb_slowmode = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto enabled = args[1]->ToBoolean(isolate)->Value();
+
+        auto length = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_slowmode((TmiClient*) client, channel_buf, enabled, length);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "slowmode", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_slowmode_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_slowmode_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_subgift(on_subgift_t callback) {
+    this->cb_subgift = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto streak = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        auto recipient_str = args[3]->ToString(context).ToLocalChecked();
+        auto recipient_buf = new char[recipient_str->Utf8Length(isolate) + 1]();
+        recipient_str->WriteUtf8(isolate, recipient_buf, recipient_str->Utf8Length(isolate));
+
+        auto methods_obj = args[4]->ToObject(context).ToLocalChecked();
+        auto methods = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, methods_obj));
+
+        auto userstate_obj = args[5]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_subgift((TmiClient*) client, channel_buf, username_buf, streak, recipient_buf, (TmiObject*) methods, (TmiObject*) userstate);
+
+        delete userstate;
+        delete methods;
+        delete[] recipient_buf;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "subgift", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_subgift_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_subgift_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_submysterygift(on_submysterygift_t callback) {
+    this->cb_submysterygift = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto num = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        auto methods_obj = args[3]->ToObject(context).ToLocalChecked();
+        auto methods = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, methods_obj));
+
+        auto userstate_obj = args[4]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_submysterygift((TmiClient*) client, channel_buf, username_buf, num, (TmiObject*) methods, (TmiObject*) userstate);
+
+        delete userstate;
+        delete methods;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "submysterygift", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_submysterygift_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_submysterygift_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_subscribers(on_subscribers_t callback) {
+    this->cb_subscribers = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto enabled = args[1]->ToBoolean(isolate)->Value();
+
+        client->cb_subscribers((TmiClient*) client, channel_buf, enabled);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "subscribers", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_subscribers_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_subscribers_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_subscription(on_subscription_t callback) {
+    this->cb_subscription = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto methods_obj = args[2]->ToObject(context).ToLocalChecked();
+        auto methods = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, methods_obj));
+
+        auto msg_str = args[3]->ToString(context).ToLocalChecked();
+        auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
+        msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[4]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_subscription((TmiClient*) client, channel_buf, username_buf, (TmiObject*) methods, msg_buf, (TmiObject*) userstate);
+
+        delete userstate;
+        delete[] msg_buf;
+        delete methods;
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "subscription", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_subscription_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_subscription_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_timeout(on_timeout_t callback) {
+    this->cb_timeout = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        auto duration = args[2]->ToInteger(context).ToLocalChecked()->Value();
+
+        auto userstate_obj = args[3]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        client->cb_timeout((TmiClient*) client, channel_buf, username_buf, duration, (TmiObject*) userstate);
+
+        delete userstate;
+        delete username_buf;
+        delete channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "timeout", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_timeout_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_timeout_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_unhost(on_unhost_t callback) {
+    this->cb_unhost = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto viewers = args[1]->ToInteger(context).ToLocalChecked()->Value();
+
+        client->cb_unhost((TmiClient*) client, channel_buf, viewers);
+
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "unhost", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_unhost_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_unhost_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_unmod(on_unmod_t callback) {
+    this->cb_unmod = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto username_str = args[1]->ToString(context).ToLocalChecked();
+        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
+        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
+
+        client->cb_unmod((TmiClient*) client, channel_buf, username_buf);
+
+        delete[] username_buf;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "unmod", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_unmod_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_unmod_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_vips(on_vips_t callback) {
+    this->cb_vips = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto channel_str = args[0]->ToString(context).ToLocalChecked();
+        auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
+        channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
+
+        auto vips_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto vips = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, vips_obj));
+
+        client->cb_vips((TmiClient*) client, channel_buf, (TmiObject*) vips);
+
+        delete vips;
+        delete[] channel_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "vips", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_vips_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_vips_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
 
 void TmixxClient::on_whisper(on_whisper_t callback) {
+    this->cb_whisper = callback;
+    auto client_obj = this->obj;
+    auto client_value = Local<Value>(client_obj);
+
+    auto tpl = FunctionTemplate::New(this->isolate, [](auto args) -> void {
+        auto isolate = args.GetIsolate();
+        auto context = isolate->GetCurrentContext();
+        auto client_obj = args
+            .Data()
+            ->ToObject(context)
+            .ToLocalChecked();
+        auto client = node::ObjectWrap::Unwrap<TmixxClient>(client_obj);
+
+        auto from_str = args[0]->ToString(context).ToLocalChecked();
+        auto from_buf = new char[from_str->Utf8Length(isolate) + 1]();
+        from_str->WriteUtf8(isolate, from_buf, from_str->Utf8Length(isolate));
+
+        auto userstate_obj = args[1]->ToObject(context).ToLocalChecked();
+        auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        auto msg_str = args[2]->ToString(context).ToLocalChecked();
+        auto msg_buf = new char[msg_str->Utf8Length(isolate) + 1]();
+        msg_str->WriteUtf8(isolate, msg_buf, msg_str->Utf8Length(isolate));
+
+        auto self = args[3]->ToBoolean(isolate)->Value();
+
+        client->cb_whisper((TmiClient*) client, from_buf, (TmiObject*) userstate, msg_buf, self);
+
+        delete[] msg_buf;
+        delete userstate;
+        delete[] from_buf;
+    }, client_value);
+    auto fn = tpl->GetFunction(this->context).ToLocalChecked();
+
+    auto msg = String::NewFromUtf8(this->isolate, "whisper", NewStringType::kNormal).ToLocalChecked();
+    auto on = String::NewFromUtf8(this->isolate, "on", NewStringType::kNormal).ToLocalChecked();
+    auto on_whisper_fn = this->client
+        .Get(this->isolate)
+        ->Get(this->context, on)
+        .ToLocalChecked()
+        ->ToObject(this->context)
+        .ToLocalChecked();
+
+    const unsigned argc = 2;
+    Local<Value> argv[argc] = {msg, fn};
+    on_whisper_fn->CallAsFunction(context, this->client.Get(this->isolate), argc, argv).ToLocalChecked();
 }
