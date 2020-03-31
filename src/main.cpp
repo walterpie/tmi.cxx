@@ -1,3 +1,4 @@
+#include <stdlib.h>
 #include <dlfcn.h>
 #include <node.h>
 #include <node_object_wrap.h>
@@ -26,7 +27,20 @@ namespace tmi_cxx {
 
         void* handle = dlopen(so_buf, RTLD_LAZY);
 
-        void (*tmicxx_main)(TmiClient*) = (void (*)(TmiClient*)) dlsym(handle, "tmicxx_main");
+        if (!handle) {
+            fprintf(stderr, "tmi.cxx: couldn't open dl %s\n", so_buf);
+            fprintf(stderr, "tmi.cxx: aborting\n");
+            abort();
+        }
+
+        void (*tmicxx_main)(TmiClient*);
+        *(void **) (&tmicxx_main) = dlsym(handle, "tmicxx_main");
+
+        if (!tmicxx_main) {
+            fprintf(stderr, "tmi.cxx: couldn't find symbol `%s`\n", "tmicxx_main");
+            fprintf(stderr, "tmi.cxx: aborting\n");
+            abort();
+        }
 
         tmicxx_main((TmiClient*) client);
     }

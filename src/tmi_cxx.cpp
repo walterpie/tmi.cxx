@@ -24,63 +24,63 @@ extern "C" void tmi_promise_or_else(TmiPromise *promise, or_else_t or_else) {
     ((TmixxPromise *) promise)->or_else(or_else);
 }
 
-TmiPromise *tmi_client_action(TmiClient *client, char *channel, char *message) {
+TmiPromise *tmi_client_action(TmiClient *client, const char *channel, const char *message) {
     return (TmiPromise *)((TmixxClient *) client)->action(channel, message);
 }
 
-TmiPromise *tmi_client_ban(TmiClient *client, char *channel, char *username, char *reason /* optional */) {
+TmiPromise *tmi_client_ban(TmiClient *client, const char *channel, const char *username, const char *reason /* optional */) {
     return (TmiPromise *)((TmixxClient *) client)->ban(channel, username, reason /* optional */);
 }
 
-TmiPromise *tmi_client_clear(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_clear(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->clear(channel);
 }
 
-TmiPromise *tmi_client_color(TmiClient *client, char *color) {
+TmiPromise *tmi_client_color(TmiClient *client, const char *color) {
     return (TmiPromise *)((TmixxClient *) client)->color(color);
 }
 
-TmiPromise *tmi_client_commercial(TmiClient *client, char *channel, int seconds) {
+TmiPromise *tmi_client_commercial(TmiClient *client, const char *channel, int seconds) {
     return (TmiPromise *)((TmixxClient *) client)->commercial(channel, seconds);
 }
 
-TmiPromise *tmi_client_deletemessage(TmiClient *client, char *channel, char *uuid) {
+TmiPromise *tmi_client_deletemessage(TmiClient *client, const char *channel, const char *uuid) {
     return (TmiPromise *)((TmixxClient *) client)->deletemessage(channel, uuid);
 }
 
-TmiPromise *tmi_client_emoteonly(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_emoteonly(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->emoteonly(channel);
 }
 
-TmiPromise *tmi_client_emoteonlyoff(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_emoteonlyoff(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->emoteonlyoff(channel);
 }
 
-TmiPromise *tmi_client_followersonly(TmiClient *client, char *channel, int length /* optional */) {
+TmiPromise *tmi_client_followersonly(TmiClient *client, const char *channel, int length /* optional */) {
     return (TmiPromise *)((TmixxClient *) client)->followersonly(channel, length /* optional */);
 }
 
-TmiPromise *tmi_client_followersonlyoff(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_followersonlyoff(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->followersonlyoff(channel);
 }
 
-TmiPromise *tmi_client_host(TmiClient *client, char *channel, char *target) {
+TmiPromise *tmi_client_host(TmiClient *client, const char *channel, const char *target) {
     return (TmiPromise *)((TmixxClient *) client)->host(channel, target);
 }
 
-TmiPromise *tmi_client_join(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_join(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->join(channel);
 }
 
-TmiPromise *tmi_client_mod(TmiClient *client, char *channel, char *username) {
+TmiPromise *tmi_client_mod(TmiClient *client, const char *channel, const char *username) {
     return (TmiPromise *)((TmixxClient *) client)->mod(channel, username);
 }
 
-TmiPromise *tmi_client_mods(TmiClient *client, char *mods) {
+TmiPromise *tmi_client_mods(TmiClient *client, const char *mods) {
     return (TmiPromise *)((TmixxClient *) client)->mods(mods);
 }
 
-TmiPromise *tmi_client_part(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_part(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->part(channel);
 }
 
@@ -88,67 +88,67 @@ TmiPromise *tmi_client_ping(TmiClient *client) {
     return (TmiPromise *)((TmixxClient *) client)->ping();
 }
 
-TmiPromise *tmi_client_r9kbeta(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_r9kbeta(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->r9kbeta(channel);
 }
 
-TmiPromise *tmi_client_r9kbetaoff(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_r9kbetaoff(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->r9kbetaoff(channel);
 }
 
-TmiPromise *tmi_client_raw(TmiClient *client, char *msg) {
+TmiPromise *tmi_client_raw(TmiClient *client, const char *msg) {
     return (TmiPromise *)((TmixxClient *) client)->raw(msg);
 }
 
-TmiPromise *tmi_client_say(TmiClient *client, char *channel, char *msg) {
+TmiPromise *tmi_client_say(TmiClient *client, const char *channel, const char *msg) {
     return (TmiPromise *)((TmixxClient *) client)->say(channel, msg);
 }
 
-TmiPromise *tmi_client_slow(TmiClient *client, char *channel, int length /* optional */) {
+TmiPromise *tmi_client_slow(TmiClient *client, const char *channel, int length /* optional */) {
     return (TmiPromise *)((TmixxClient *) client)->slow(channel, length /* optional */);
 }
 
-TmiPromise *tmi_client_slowoff(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_slowoff(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->slowoff(channel);
 }
 
-TmiPromise *tmi_client_subscribers(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_subscribers(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->subscribers(channel);
 }
 
-TmiPromise *tmi_client_subscribersoff(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_subscribersoff(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->subscribersoff(channel);
 }
 
-TmiPromise *tmi_client_timeout(TmiClient *client, char *channel, char *username, int length /* optional */, char *reason /* optional */) {
+TmiPromise *tmi_client_timeout(TmiClient *client, const char *channel, const char *username, int length /* optional */, const char *reason /* optional */) {
     return (TmiPromise *)((TmixxClient *) client)->timeout(channel, username, length /* optional */, reason /* optional */);
 }
 
-TmiPromise *tmi_client_unban(TmiClient *client, char *channel, char *username) {
+TmiPromise *tmi_client_unban(TmiClient *client, const char *channel, const char *username) {
     return (TmiPromise *)((TmixxClient *) client)->unban(channel, username);
 }
 
-TmiPromise *tmi_client_unhost(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_unhost(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->unhost(channel);
 }
 
-TmiPromise *tmi_client_unmod(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_unmod(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->unmod(channel);
 }
 
-TmiPromise *tmi_client_unvip(TmiClient *client, char *channel, char *username) {
+TmiPromise *tmi_client_unvip(TmiClient *client, const char *channel, const char *username) {
     return (TmiPromise *)((TmixxClient *) client)->unvip(channel, username);
 }
 
-TmiPromise *tmi_client_vip(TmiClient *client, char *channel, char *username) {
+TmiPromise *tmi_client_vip(TmiClient *client, const char *channel, const char *username) {
     return (TmiPromise *)((TmixxClient *) client)->vip(channel, username);
 }
 
-TmiPromise *tmi_client_vips(TmiClient *client, char *channel) {
+TmiPromise *tmi_client_vips(TmiClient *client, const char *channel) {
     return (TmiPromise *)((TmixxClient *) client)->vips(channel);
 }
 
-TmiPromise *tmi_client_whisper(TmiClient *client, char *username, char *msg) {
+TmiPromise *tmi_client_whisper(TmiClient *client, const char *username, const char *msg) {
     return (TmiPromise *)((TmixxClient *) client)->whisper(username, msg);
 }
 
@@ -364,15 +364,15 @@ extern "C" TmiObject *tmi_object_to_array(TmiObject *object) {
     return (TmiObject *) ((TmixxObject *) object)->to_array();
 }
 
-extern "C" char *tmi_object_to_string(TmiObject *object) {
-    return (char *) ((TmixxObject *) object)->to_string();
+extern "C" const char *tmi_object_to_string(TmiObject *object) {
+    return (const char *) ((TmixxObject *) object)->to_string();
 }
 
 extern "C" TmiObject *tmi_object_index(TmiObject *object, size_t idx) {
     return (TmiObject *) (*(TmixxObject *) object)[idx];
 }
 
-extern "C" TmiObject *tmi_object_get(TmiObject *object, char *str) {
+extern "C" TmiObject *tmi_object_get(TmiObject *object, const char *str) {
     return (TmiObject *) (*(TmixxObject *) object)[str];
 }
 
@@ -588,7 +588,7 @@ TmixxObject* TmixxObject::to_array() {
     return this;
 }
 
-char* TmixxObject::to_string() {
+const char* TmixxObject::to_string() {
     auto str = this->object.Get(this->isolate)->ToString(this->context).ToLocalChecked();
     auto buf = new char[str->Utf8Length(isolate) + 1]();
     str->WriteUtf8(isolate, buf, str->Utf8Length(isolate));
@@ -605,7 +605,7 @@ TmixxObject* TmixxObject::operator [](size_t idx) {
     return new TmixxObject(this->client, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, object));
 }
 
-TmixxObject* TmixxObject::operator [](char* str) {
+TmixxObject* TmixxObject::operator [](const char* str) {
     auto key = String::NewFromUtf8(this->isolate, str, NewStringType::kNormal).ToLocalChecked();
     auto field = this->object
         .Get(this->isolate)
@@ -700,7 +700,7 @@ void* TmixxClient::userdata() {
     return this->_userdata;
 }
 
-TmixxPromise* TmixxClient::action(char* channel, char* message) {
+TmixxPromise* TmixxClient::action(const char* channel, const char* message) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto msg = String::NewFromUtf8(this->isolate, message, NewStringType::kNormal).ToLocalChecked();
     auto action = String::NewFromUtf8(this->isolate, "action", NewStringType::kNormal).ToLocalChecked();
@@ -721,7 +721,7 @@ TmixxPromise* TmixxClient::action(char* channel, char* message) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::ban(char* channel, char* username, char* _reason /* optional */) {
+TmixxPromise* TmixxClient::ban(const char* channel, const char* username, const char* _reason /* optional */) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
     if (_reason) {
@@ -762,7 +762,7 @@ TmixxPromise* TmixxClient::ban(char* channel, char* username, char* _reason /* o
     }
 }
 
-TmixxPromise* TmixxClient::clear(char* channel) {
+TmixxPromise* TmixxClient::clear(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto clear = String::NewFromUtf8(this->isolate, "clear", NewStringType::kNormal).ToLocalChecked();
     auto clear_fn = this->client
@@ -782,7 +782,7 @@ TmixxPromise* TmixxClient::clear(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::color(char* _color) {
+TmixxPromise* TmixxClient::color(const char* _color) {
     auto col = String::NewFromUtf8(this->isolate, _color, NewStringType::kNormal).ToLocalChecked();
     auto color = String::NewFromUtf8(this->isolate, "color", NewStringType::kNormal).ToLocalChecked();
     auto color_fn = this->client
@@ -802,7 +802,7 @@ TmixxPromise* TmixxClient::color(char* _color) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::commercial(char* channel, int seconds) {
+TmixxPromise* TmixxClient::commercial(const char* channel, int seconds) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto secs = Number::New(this->isolate, seconds);
     auto commercial = String::NewFromUtf8(this->isolate, "commercial", NewStringType::kNormal).ToLocalChecked();
@@ -823,7 +823,7 @@ TmixxPromise* TmixxClient::commercial(char* channel, int seconds) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::deletemessage(char* channel, char* _uuid) {
+TmixxPromise* TmixxClient::deletemessage(const char* channel, const char* _uuid) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto uuid = String::NewFromUtf8(this->isolate, _uuid, NewStringType::kNormal).ToLocalChecked();
     auto deletemessage = String::NewFromUtf8(this->isolate, "deletemessage", NewStringType::kNormal).ToLocalChecked();
@@ -844,7 +844,7 @@ TmixxPromise* TmixxClient::deletemessage(char* channel, char* _uuid) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::emoteonly(char* channel) {
+TmixxPromise* TmixxClient::emoteonly(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto emoteonly = String::NewFromUtf8(this->isolate, "emoteonly", NewStringType::kNormal).ToLocalChecked();
     auto emoteonly_fn = this->client
@@ -864,7 +864,7 @@ TmixxPromise* TmixxClient::emoteonly(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::emoteonlyoff(char* channel) {
+TmixxPromise* TmixxClient::emoteonlyoff(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto emoteonlyoff = String::NewFromUtf8(this->isolate, "emoteonlyoff", NewStringType::kNormal).ToLocalChecked();
     auto emoteonlyoff_fn = this->client
@@ -884,7 +884,7 @@ TmixxPromise* TmixxClient::emoteonlyoff(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::followersonly(char* channel, int length /* optional */) {
+TmixxPromise* TmixxClient::followersonly(const char* channel, int length /* optional */) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto len = Number::New(this->isolate, length);
     auto followersonly = String::NewFromUtf8(this->isolate, "followersonly", NewStringType::kNormal).ToLocalChecked();
@@ -905,7 +905,7 @@ TmixxPromise* TmixxClient::followersonly(char* channel, int length /* optional *
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::followersonlyoff(char* channel) {
+TmixxPromise* TmixxClient::followersonlyoff(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto followersonlyoff = String::NewFromUtf8(this->isolate, "followersonlyoff", NewStringType::kNormal).ToLocalChecked();
     auto followersonlyoff_fn = this->client
@@ -925,7 +925,7 @@ TmixxPromise* TmixxClient::followersonlyoff(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::host(char* channel, char* _target) {
+TmixxPromise* TmixxClient::host(const char* channel, const char* _target) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto target = String::NewFromUtf8(this->isolate, _target, NewStringType::kNormal).ToLocalChecked();
     auto host = String::NewFromUtf8(this->isolate, "host", NewStringType::kNormal).ToLocalChecked();
@@ -946,7 +946,7 @@ TmixxPromise* TmixxClient::host(char* channel, char* _target) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::join(char* channel) {
+TmixxPromise* TmixxClient::join(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto join = String::NewFromUtf8(this->isolate, "join", NewStringType::kNormal).ToLocalChecked();
     auto join_fn = this->client
@@ -966,7 +966,7 @@ TmixxPromise* TmixxClient::join(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::mod(char* channel, char* username) {
+TmixxPromise* TmixxClient::mod(const char* channel, const char* username) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
     auto mod = String::NewFromUtf8(this->isolate, "mod", NewStringType::kNormal).ToLocalChecked();
@@ -987,7 +987,7 @@ TmixxPromise* TmixxClient::mod(char* channel, char* username) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::mods(char* channel) {
+TmixxPromise* TmixxClient::mods(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto mods = String::NewFromUtf8(this->isolate, "mods", NewStringType::kNormal).ToLocalChecked();
     auto mods_fn = this->client
@@ -1007,7 +1007,7 @@ TmixxPromise* TmixxClient::mods(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::part(char* channel) {
+TmixxPromise* TmixxClient::part(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto part = String::NewFromUtf8(this->isolate, "part", NewStringType::kNormal).ToLocalChecked();
     auto part_fn = this->client
@@ -1046,7 +1046,7 @@ TmixxPromise* TmixxClient::ping() {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::r9kbeta(char* channel) {
+TmixxPromise* TmixxClient::r9kbeta(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto r9kbeta = String::NewFromUtf8(this->isolate, "r9kbeta", NewStringType::kNormal).ToLocalChecked();
     auto r9kbeta_fn = this->client
@@ -1066,7 +1066,7 @@ TmixxPromise* TmixxClient::r9kbeta(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::r9kbetaoff(char* channel) {
+TmixxPromise* TmixxClient::r9kbetaoff(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto r9kbetaoff = String::NewFromUtf8(this->isolate, "r9kbetaoff", NewStringType::kNormal).ToLocalChecked();
     auto r9kbetaoff_fn = this->client
@@ -1086,7 +1086,7 @@ TmixxPromise* TmixxClient::r9kbetaoff(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::raw(char* _msg) {
+TmixxPromise* TmixxClient::raw(const char* _msg) {
     auto msg = String::NewFromUtf8(this->isolate, _msg, NewStringType::kNormal).ToLocalChecked();
     auto raw = String::NewFromUtf8(this->isolate, "raw", NewStringType::kNormal).ToLocalChecked();
     auto raw_fn = this->client
@@ -1106,7 +1106,7 @@ TmixxPromise* TmixxClient::raw(char* _msg) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise *TmixxClient::say(char* channel, char* message) {
+TmixxPromise *TmixxClient::say(const char* channel, const char* message) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto msg = String::NewFromUtf8(this->isolate, message, NewStringType::kNormal).ToLocalChecked();
     auto say = String::NewFromUtf8(this->isolate, "say", NewStringType::kNormal).ToLocalChecked();
@@ -1127,7 +1127,7 @@ TmixxPromise *TmixxClient::say(char* channel, char* message) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::slow(char* channel, int length /* optional */) {
+TmixxPromise* TmixxClient::slow(const char* channel, int length /* optional */) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto len = Number::New(this->isolate, length);
     auto slow = String::NewFromUtf8(this->isolate, "slow", NewStringType::kNormal).ToLocalChecked();
@@ -1148,7 +1148,7 @@ TmixxPromise* TmixxClient::slow(char* channel, int length /* optional */) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::slowoff(char* channel) {
+TmixxPromise* TmixxClient::slowoff(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto slowoff = String::NewFromUtf8(this->isolate, "slowoff", NewStringType::kNormal).ToLocalChecked();
     auto slowoff_fn = this->client
@@ -1168,7 +1168,7 @@ TmixxPromise* TmixxClient::slowoff(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::subscribers(char* channel) {
+TmixxPromise* TmixxClient::subscribers(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto subscribers = String::NewFromUtf8(this->isolate, "subscribers", NewStringType::kNormal).ToLocalChecked();
     auto subscribers_fn = this->client
@@ -1188,7 +1188,7 @@ TmixxPromise* TmixxClient::subscribers(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::subscribersoff(char* channel) {
+TmixxPromise* TmixxClient::subscribersoff(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto subscribersoff = String::NewFromUtf8(this->isolate, "subscribersoff", NewStringType::kNormal).ToLocalChecked();
     auto subscribersoff_fn = this->client
@@ -1208,7 +1208,7 @@ TmixxPromise* TmixxClient::subscribersoff(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::timeout(char* channel, char* username, int length /* optional */, char* _reason /* optional */) {
+TmixxPromise* TmixxClient::timeout(const char* channel, const char* username, int length /* optional */, const char* _reason /* optional */) {
     if (length == -1) {
         length = 300;
     }
@@ -1253,7 +1253,7 @@ TmixxPromise* TmixxClient::timeout(char* channel, char* username, int length /* 
     }
 }
 
-TmixxPromise* TmixxClient::unban(char* channel, char* username) {
+TmixxPromise* TmixxClient::unban(const char* channel, const char* username) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
     auto unban = String::NewFromUtf8(this->isolate, "unban", NewStringType::kNormal).ToLocalChecked();
@@ -1274,7 +1274,7 @@ TmixxPromise* TmixxClient::unban(char* channel, char* username) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::unhost(char* channel) {
+TmixxPromise* TmixxClient::unhost(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto unhost = String::NewFromUtf8(this->isolate, "unhost", NewStringType::kNormal).ToLocalChecked();
     auto unhost_fn = this->client
@@ -1294,7 +1294,7 @@ TmixxPromise* TmixxClient::unhost(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::unmod(char* channel) {
+TmixxPromise* TmixxClient::unmod(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto unmod = String::NewFromUtf8(this->isolate, "unmod", NewStringType::kNormal).ToLocalChecked();
     auto unmod_fn = this->client
@@ -1314,7 +1314,7 @@ TmixxPromise* TmixxClient::unmod(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::unvip(char* channel, char* username) {
+TmixxPromise* TmixxClient::unvip(const char* channel, const char* username) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
     auto unvip = String::NewFromUtf8(this->isolate, "unvip", NewStringType::kNormal).ToLocalChecked();
@@ -1335,7 +1335,7 @@ TmixxPromise* TmixxClient::unvip(char* channel, char* username) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::vip(char* channel, char* username) {
+TmixxPromise* TmixxClient::vip(const char* channel, const char* username) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
     auto vip = String::NewFromUtf8(this->isolate, "vip", NewStringType::kNormal).ToLocalChecked();
@@ -1356,7 +1356,7 @@ TmixxPromise* TmixxClient::vip(char* channel, char* username) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::vips(char* channel) {
+TmixxPromise* TmixxClient::vips(const char* channel) {
     auto chan = String::NewFromUtf8(this->isolate, channel, NewStringType::kNormal).ToLocalChecked();
     auto vips = String::NewFromUtf8(this->isolate, "vips", NewStringType::kNormal).ToLocalChecked();
     auto vips_fn = this->client
@@ -1376,7 +1376,7 @@ TmixxPromise* TmixxClient::vips(char* channel) {
     return new TmixxPromise(this, this->isolate, this->context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, promise));
 }
 
-TmixxPromise* TmixxClient::whisper(char* username, char* _msg) {
+TmixxPromise* TmixxClient::whisper(const char* username, const char* _msg) {
     auto user = String::NewFromUtf8(this->isolate, username, NewStringType::kNormal).ToLocalChecked();
     auto msg = String::NewFromUtf8(this->isolate, _msg, NewStringType::kNormal).ToLocalChecked();
     auto whisper = String::NewFromUtf8(this->isolate, "whisper", NewStringType::kNormal).ToLocalChecked();
@@ -1558,19 +1558,19 @@ void TmixxClient::on_chat(on_chat_t callback) {
         auto channel_buf = new char[channel_str->Utf8Length(isolate) + 1]();
         channel_str->WriteUtf8(isolate, channel_buf, channel_str->Utf8Length(isolate));
 
-        auto username_str = args[1]->ToString(context).ToLocalChecked();
-        auto username_buf = new char[username_str->Utf8Length(isolate) + 1]();
-        username_str->WriteUtf8(isolate, username_buf, username_str->Utf8Length(isolate));
-
-        auto userstate_obj = args[2]->ToObject(context).ToLocalChecked();
+        auto userstate_obj = args[1]->ToObject(context).ToLocalChecked();
         auto userstate = new TmixxObject(client, isolate, context, Persistent<Object, CopyablePersistentTraits<Object>>(isolate, userstate_obj));
+
+        auto message_str = args[2]->ToString(context).ToLocalChecked();
+        auto message_buf = new char[message_str->Utf8Length(isolate) + 1]();
+        message_str->WriteUtf8(isolate, message_buf, message_str->Utf8Length(isolate));
 
         auto self = args[3]->ToBoolean(isolate)->Value();
 
-        client->cb_chat((TmiClient*) client, channel_buf, (TmiObject*) userstate, username_buf, self);
+        client->cb_chat((TmiClient*) client, channel_buf, (TmiObject*) userstate, message_buf, self);
 
         delete userstate;
-        delete[] username_buf;
+        delete[] message_buf;
         delete[] channel_buf;
     }, client_value);
     auto fn = tpl->GetFunction(this->context).ToLocalChecked();
