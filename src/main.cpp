@@ -29,6 +29,7 @@ namespace tmi_cxx {
 
         if (!handle) {
             fprintf(stderr, "tmi.cxx: couldn't open dl %s\n", so_buf);
+            fprintf(stderr, "tmi.cxx: %s\n", dlerror());
             fprintf(stderr, "tmi.cxx: aborting\n");
             abort();
         }
@@ -38,6 +39,7 @@ namespace tmi_cxx {
 
         if (!tmicxx_main) {
             fprintf(stderr, "tmi.cxx: couldn't find symbol `%s`\n", "tmicxx_main");
+            fprintf(stderr, "tmi.cxx: %s\n", dlerror());
             fprintf(stderr, "tmi.cxx: aborting\n");
             abort();
         }
