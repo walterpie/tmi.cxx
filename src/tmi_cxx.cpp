@@ -2605,8 +2605,8 @@ void TmixxClient::on_raw_message(on_raw_message_t callback) {
 
         client->cb_raw_message((TmiClient*) client, (TmiObject*) msg_cloned, (TmiObject*) msg);
 
-        delete[] msg;
-        delete[] msg_cloned;
+        delete msg;
+        delete msg_cloned;
     }, client_value);
     auto fn = tpl->GetFunction(this->context).ToLocalChecked();
 
